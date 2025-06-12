@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    options {
+        skipDefaultCheckout(true)  // 👈 ADD THIS LINE
+    }
 
     environment {
         DOCKER_IMAGE = "echelonkay/flowbank-app"
@@ -38,4 +41,3 @@ pipeline {
         }
     }
 }
-// This Jenkinsfile defines a pipeline to build and push a Docker image for the FlowBank application.
