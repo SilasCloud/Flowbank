@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     options {
-        skipDefaultCheckout(true)
+        skipDefaultCheckout(true)  // prevents automatic checkout, so we’ll do it manually
     }
 
     environment {
@@ -12,6 +12,12 @@ pipeline {
     }
 
     stages {
+        stage('Checkout Code') {
+            steps {
+                checkout scm  // 👈 this pulls code into the workspace
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 script {
