@@ -1,7 +1,8 @@
 pipeline {
     agent any
+
     options {
-        skipDefaultCheckout(true)  // 👈 ADD THIS LINE
+        skipDefaultCheckout(true)
     }
 
     environment {
@@ -13,19 +14,23 @@ pipeline {
     stages {
         stage('Build Docker Image') {
             steps {
-                script {
-                    echo "Building Docker image: ${DOCKER_IMAGE}:${DOCKER_TAG}"
-                    sh "docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} ."
+                dir("${env.WORKSPACE}@script") {
+                    script {
+                        echo "Building Docker image: ${DOCKER_IMAGE}:${DOCKER_TAG}"
+                        sh "docker build -t ${DOCKER_IMAGE}:${DOCKER_TAG} ."
+                    }
                 }
             }
         }
 
         stage('Login & Push to Docker Hub') {
             steps {
-                script {
-                    echo "Logging in to Docker Hub and pushing image..."
-                    docker.withRegistry('', REGISTRY_CREDENTIALS) {
-                        sh "docker push ${DOCKER_IMAGE}:${DOCKER_TAG}"
+                dir("${env.WORKSPACE}@script") {
+                    script {
+                        echo "Logging in to Docker Hub and pushing image..."
+                        docker.withRegistry('', REGISTRY_CREDENTIALS) {
+                            sh "docker push ${DOCKER_IMAGE}:${DOCKER_TAG}"
+                        }
                     }
                 }
             }
