@@ -2,22 +2,12 @@ pipeline {
     agent any
 
     environment {
-        // Docker Hub image details
         DOCKER_IMAGE = "echelonkay/flowbank-app"
         DOCKER_TAG = "v1.0.1"
-
-        // Jenkins credentials ID for Docker Hub login
         REGISTRY_CREDENTIALS = "docker-hub-creds"
     }
 
     stages {
-
-        stage('Checkout Code') {
-            steps {
-                git branch: 'test', url: 'https://github.com/SilasCloud/Flowbank.git'
-            }
-        }
-
         stage('Build Docker Image') {
             steps {
                 script {
@@ -48,3 +38,4 @@ pipeline {
         }
     }
 }
+// This Jenkinsfile defines a pipeline to build and push a Docker image for the FlowBank application.
